@@ -735,6 +735,20 @@ public final class PictureSelectionCameraModel {
         return onlyCameraFragment;
     }
 
+    public Intent getIntent() {
+        if (!DoubleUtils.isFastDoubleClick()) {
+            Activity activity = selector.getActivity();
+            if (activity == null) {
+                throw new NullPointerException("Activity cannot be null");
+            }
+            selectionConfig.isResultListenerBack = false;
+            selectionConfig.isActivityResultBack = true;
+            activity.overridePendingTransition(R.anim.ps_anim_fade_in, 0);
+            return new Intent(activity, PictureSelectorTransparentActivity.class);
+        }
+        return null;
+    }
+
     /**
      * Start PictureSelector
      * <p>

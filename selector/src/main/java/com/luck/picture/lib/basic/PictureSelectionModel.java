@@ -138,9 +138,10 @@ public final class PictureSelectionModel {
 
     /**
      * Set up player engine
-     *  <p>
-     *   Used to preview custom player instances，MediaPlayer by default
-     *  </p>
+     * <p>
+     * Used to preview custom player instances，MediaPlayer by default
+     * </p>
+     *
      * @param engine
      * @return
      */
@@ -153,7 +154,7 @@ public final class PictureSelectionModel {
      * Image Compress the engine
      *
      * @param engine Image Compress the engine
-     * Please use {@link CompressFileEngine}
+     *               Please use {@link CompressFileEngine}
      * @return
      */
     @Deprecated
@@ -179,7 +180,7 @@ public final class PictureSelectionModel {
      * Image Crop the engine
      *
      * @param engine Image Crop the engine
-     * Please Use {@link CropFileEngine}
+     *               Please Use {@link CropFileEngine}
      * @return
      */
     @Deprecated
@@ -204,9 +205,8 @@ public final class PictureSelectionModel {
      * App Sandbox file path transform
      *
      * @param engine App Sandbox path transform
-     * Please Use {@link UriToFileTransformEngine}
+     *               Please Use {@link UriToFileTransformEngine}
      * @return
-     *
      */
     @Deprecated
     public PictureSelectionModel setSandboxFileEngine(SandboxFileEngine engine) {
@@ -366,7 +366,7 @@ public final class PictureSelectionModel {
     }
 
     /**
-     *  Permission denied
+     * Permission denied
      *
      * @param listener
      * @return
@@ -1396,6 +1396,23 @@ public final class PictureSelectionModel {
         }
     }
 
+    public Intent getIntent() {
+        if (!DoubleUtils.isFastDoubleClick()) {
+            Activity activity = selector.getActivity();
+            if (activity == null) {
+                throw new NullPointerException("Activity cannot be null");
+            }
+            selectionConfig.isResultListenerBack = false;
+            selectionConfig.isActivityResultBack = true;
+            if (selectionConfig.imageEngine == null && selectionConfig.chooseMode != SelectMimeType.ofAudio()) {
+                throw new NullPointerException("imageEngine is null,Please implement ImageEngine");
+            }
+            PictureWindowAnimationStyle windowAnimationStyle = selectionConfig.selectorStyle.getWindowAnimationStyle();
+            activity.overridePendingTransition(windowAnimationStyle.activityEnterAnimation, R.anim.ps_anim_fade_in);
+            return new Intent(activity, PictureSelectorSupporterActivity.class);
+        }
+        return null;
+    }
 
     /**
      * Start PictureSelector
